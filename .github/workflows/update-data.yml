@@ -1,0 +1,37 @@
+name: Update data.json hourly
+
+on:
+    schedule:
+        - cron: '0 * * * *' # Runs every hour
+    workflow_dispatch:
+
+jobs:
+    update-data:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 'latest'
+
+            - name: Install dependencies
+              run: |
+                  npm ci --no-audit --no-fund --verbose
+
+            - name: Update data.json
+              run: |
+                  node index.js
+
+            - name: Commit and push changes
+              run: |
+                  git config --global user.name "github-actions[bot]"
+                  git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                  git add data.json
+                  git commit -m "Update data.json [Automated]" || echo "No changes to commit"
+                  git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
