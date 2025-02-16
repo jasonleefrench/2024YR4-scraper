@@ -2,7 +2,7 @@ name: Update data.json daily
 
 on:
     schedule:
-        - cron: '0 0 * * *' # Runs every day
+        - cron: '55 23 * * *' # Runs every day
     workflow_dispatch:
 
 jobs:
