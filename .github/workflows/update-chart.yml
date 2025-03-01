@@ -1,8 +1,8 @@
-name: Update Chart in README
+name: Update chart in README
 
 on:
   workflow_run:
-    workflows: ["update-data"]
+    workflows: ["Update data.json daily"]
     types:
       - completed
   workflow_dispatch:
